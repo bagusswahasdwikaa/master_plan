@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
-import './views/plan_screen.dart';
+import '../models/data_layer.dart';
+import '../provider/plan_provider.dart';
+import '../views/plan_screen.dart';
 
-void main() => runApp(MasterPlanApp());
+void main() {
+  runApp(MyApp());
+}
 
-class MasterPlanApp extends StatelessWidget {
-  const MasterPlanApp({super.key});
+class MyApp extends StatelessWidget {
+  final ValueNotifier<Plan> planNotifier = ValueNotifier<Plan>(
+    const Plan(name: 'Master Plan Bagus Wahasdwika', tasks: []),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: PlanScreen(),
+    return PlanProvider(
+      notifier: planNotifier,
+      child: MaterialApp(
+        title: 'Plan App',
+        theme: ThemeData(primarySwatch: Colors.red),
+        home: const PlanScreen(),
+      ),
     );
   }
 }

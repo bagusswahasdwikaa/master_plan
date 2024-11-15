@@ -1,5 +1,6 @@
-import '../models/data_layer.dart';
 import 'package:flutter/material.dart';
+import '../models/data_layer.dart';
+import '../provider/plan_provider.dart';
 
 class PlanScreen extends StatefulWidget {
   const PlanScreen({super.key});
@@ -9,76 +10,91 @@ class PlanScreen extends StatefulWidget {
 }
 
 class _PlanScreenState extends State<PlanScreen> {
-  Plan plan = const Plan(); // Inisialisasi objek Plan
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Ganti ‘Namaku’ dengan nama panggilan Anda
-      appBar: AppBar(title: const Text('Master Plan Bagus Wahasdwika', style: TextStyle(color: Colors.white),),backgroundColor: const Color.fromARGB(255, 176, 39, 39),), 
-      body: _buildList(),
-      floatingActionButton: _buildAddTaskButton(),
+      appBar: AppBar(
+        title: const Text(
+          'Master Plan Bagus Wahasdwika',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color.fromARGB(255, 176, 39, 39),
+      ),
+      body: ValueListenableBuilder<Plan>(
+        valueListenable: PlanProvider.of(context),
+        builder: (context, plan, child) {
+          return Column(
+            children: [
+              Expanded(child: _buildList(plan)),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    plan.completenessMessage,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      floatingActionButton: _buildAddTaskButton(context),
     );
   }
 
-  // Widget untuk tombol tambah rencana
-  Widget _buildAddTaskButton() {
+  Widget _buildAddTaskButton(BuildContext context) {
+    ValueNotifier<Plan> planNotifier = PlanProvider.of(context);
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
-        setState(() {
-          plan = Plan(
-            name: plan.name,
-            tasks: List<Task>.from(plan.tasks)
-              ..add(const Task(description: 'Tugas Baru')),
-          );
-        });
+        Plan currentPlan = planNotifier.value;
+        planNotifier.value = Plan(
+          name: currentPlan.name,
+          tasks: List<Task>.from(currentPlan.tasks)
+            ..add(const Task(description: 'Tugas Baru')),
+        );
       },
     );
   }
 
-  // Widget untuk menampilkan daftar tugas
-  Widget _buildList() {
+  Widget _buildList(Plan plan) {
     return ListView.builder(
-      itemCount: plan.tasks.length, // Jumlah item dalam daftar
+      itemCount: plan.tasks.length,
       itemBuilder: (context, index) =>
-          _buildTaskTile(plan.tasks[index], index), // Widget tiap item
+          _buildTaskTile(plan.tasks[index], index, context),
     );
   }
 
-  // Widget untuk setiap item dalam daftar tugas
-  Widget _buildTaskTile(Task task, int index) {
+  Widget _buildTaskTile(Task task, int index, BuildContext context) {
+    ValueNotifier<Plan> planNotifier = PlanProvider.of(context);
     return ListTile(
-      // Checkbox untuk mengubah status tugas (complete)
       leading: Checkbox(
         value: task.complete,
         onChanged: (selected) {
-          setState(() {
-            plan = Plan(
-              name: plan.name,
-              tasks: List<Task>.from(plan.tasks)
-                ..[index] = Task(
-                  description: task.description,
-                  complete: selected ?? false,
-                ),
-            );
-          });
+          Plan currentPlan = planNotifier.value;
+          planNotifier.value = Plan(
+            name: currentPlan.name,
+            tasks: List<Task>.from(currentPlan.tasks)
+              ..[index] = Task(
+                description: task.description,
+                complete: selected ?? false,
+              ),
+          );
         },
       ),
-      // TextFormField untuk mengedit deskripsi tugas
       title: TextFormField(
         initialValue: task.description,
         onChanged: (text) {
-          setState(() {
-            plan = Plan(
-              name: plan.name,
-              tasks: List<Task>.from(plan.tasks)
-                ..[index] = Task(
-                  description: text,
-                  complete: task.complete,
-                ),
-            );
-          });
+          Plan currentPlan = planNotifier.value;
+          planNotifier.value = Plan(
+            name: currentPlan.name,
+            tasks: List<Task>.from(currentPlan.tasks)
+              ..[index] = Task(
+                description: text,
+                complete: task.complete,
+              ),
+          );
         },
       ),
     );
