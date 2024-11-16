@@ -47,7 +47,8 @@ Metode dispose() dipanggil ketika objek state akan dihapus secara permanen dari 
 
 - PlanProvider adalah turunan dari InheritedNotifier, yang pada dasarnya merupakan turunan dari InheritedWidget.
 
-Maka dari itu InheritedNotifier digunakan sebab:
+        Maka dari itu InheritedNotifier digunakan sebab:
+        
 - Efisiensi UI: Hanya widget yang terpengaruh yang diperbarui saat data berubah.
 - Notifikasi Otomatis: Menggunakan ValueNotifier untuk mempermudah pemberitahuan perubahan data ke widget terkait.
 - Pewarisan Data: Memudahkan distribusi data ke widget lain dalam pohon widget.
@@ -56,7 +57,9 @@ Maka dari itu InheritedNotifier digunakan sebab:
 
 - Penambahan variabel plan sebagai atribut di dalam class PlanScreen dan menjadikannya parameter yang harus diisi melalui constructor. 
 - Variabel plan digunakan untuk menampilkan atau mengelola detail data Plan di PlanScreen.
-Hal tersebut dilakukan karena,
+
+        Hal tersebut dilakukan karena,
+
 - Penerusan Data: Memungkinkan PlanScreen menampilkan data spesifik dari objek Plan.
 - Fleksibel: Membuat PlanScreen reusable untuk berbagai objek Plan.
 - Terstruktur: Mengikuti pola data top-down yang jelas.
@@ -66,3 +69,30 @@ Hal tersebut dilakukan karena,
 ![alt text](gif/praktikum2.gif)
 
 - Membuat total jumlah dari baris yang ditambah dan total checkbox yang sudah dikonfirmasi atau centang. 
+
+## Tugas Praktikum 3 : State di Multiple Screens
+
+#### 1. Selesaikan langkah-langkah praktikum tersebut, lalu dokumentasikan berupa GIF hasil akhir praktikum beserta penjelasannya di file README.md! Jika Anda menemukan ada yang error atau tidak berjalan dengan baik, silakan diperbaiki sesuai dengan tujuan aplikasi tersebut dibuat.
+
+- Selesai
+
+#### 2. Berdasarkan Praktikum 3 yang telah Anda lakukan, jelaskan maksud dari gambar diagram berikut ini!
+
+- Gambar diagram tersebut menjelaskan alur navigasi dan hierarki widget dalam aplikasi Flutter, yang terdiri dari dua layar utama: PlanCreatorScreen dan PlanScreen.
+
+- PlanCreatorScreen bertugas untuk membuat rencana baru.
+- PlanScreen bertugas untuk menampilkan rencana yang telah dibuat.
+
+- Navigasi
+Transisi antara PlanCreatorScreen dan PlanScreen dilakukan menggunakan Navigator.push. Ketika pengguna selesai membuat rencana di PlanCreatorScreen, mereka akan diarahkan ke PlanScreen untuk melihat hasilnya.
+
+#### 3. Lakukan capture hasil dari Langkah 14 berupa GIF, kemudian jelaskan apa yang telah Anda buat!
+
+![alt text](gif/praktikum3.gif)
+
+implementasi state management menggunakan ValueNotifier, dimana perubahan data seperti penyelesaian tugas tercermin langsung dalam UI.
+Fitur navigasi memungkinkan pengalaman pengguna yang interaktif dan dinamis, mendukung alur kerja pembuatan dan pengelolaan rencana.
+Tampilan home ketika user dapat menambahkan beberapa list plan yang didalam plan tersebut diklik dapat menambahkan list tugas sesuai dengan plan yang dibuat pada tampilan pertama.
+
+#### 4. Kumpulkan laporan praktikum Anda berupa link commit atau repository GitHub ke dosen yang telah disepakati !
+
